@@ -640,6 +640,9 @@ class SideBarUi(QWidget):
                     
                     print(f"[SideBar] フォルダ選択: {folder_name}, レベル: {level}, 親: {parent}")  # デバッグ用
                     
+                    # 修正: フォルダ選択時は全オブジェクトの選択を解除
+                    self._clear_all_selections()
+                    
                     if level == 1:
                         print(f"[SideBar] 📁 第1階層フォルダ選択: {folder_name}")
                         # attribute_uiに第1階層フォルダの属性情報を表示
@@ -682,7 +685,7 @@ class SideBarUi(QWidget):
                     original_name = item_data.get("original_name", model_name)
                     print(f"[SideBar] 🎯 配置モデル選択: {model_name} (元: {original_name})")
                     
-                    # geometry_managerで選択状態を更新
+                    # 修正: 元のモデル名で選択（バウンディングボックス表示のため）
                     self.manager.select(original_name)
                     
                     # ★ 修正: 配置モデルの属性表示機能を呼び出し
@@ -695,6 +698,7 @@ class SideBarUi(QWidget):
             else:
                 print(f"[SideBar] 警告: アイテムデータがありません")
                 # アイテムデータがない場合は属性表示をクリア
+                self._clear_all_selections()
                 if hasattr(self.main_viewer, 'attribute_ui'):
                     self.main_viewer.attribute_ui.hide_attributes()
         else:
@@ -702,6 +706,16 @@ class SideBarUi(QWidget):
             name = tree_item.text(0)
             print(f"[SideBar] 🎯 通常モード選択: {name}")
             self.manager.select(name)
+
+    def _clear_all_selections(self):
+        """すべてのオブジェクトの選択を解除"""
+        for item in self.manager.items:
+            if item.selected:
+                item.selected = False
+                # 選択変更シグナルを発火
+                self.manager.selection_changed.emit()
+                break
+
     def _update_placed_model_visibility(self, first_level_parent: str, second_level_parent: str, 
                                   third_level_parent: str, model_name: str, visible: bool):
         """配置モデルの表示状態をプロジェクト属性に保存"""

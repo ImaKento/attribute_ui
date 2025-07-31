@@ -38,20 +38,99 @@ class PointCloudUi(QWidget):
 
         self.geometry_manager = manager
         self.geometry_manager.updated.connect(self._refresh_entire_scene)
+        # 追加: 選択状態変更の監視
+        self.geometry_manager.selection_changed.connect(self._update_selection_display)
 
         self.generate_parametric_model_usecase = generate_parametric_model_usecase(self.geometry_manager)
 
         # === 中身（メインビュー） ===
         self.plotter = QtInteractor(self)
+        # 追加: バウンディングボックス表示用の変数
+        self.current_bbox_actor = None
 
         # === レイアウト構築 ===
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)  # 余白なしで最大限使う
         layout.addWidget(self.plotter)
         self.setLayout(layout)
+    
+    def _update_selection_display(self):
+        """選択されたオブジェクトのバウンディングボックスを表示"""
+        # 既存のバウンディングボックスを削除
+        if self.current_bbox_actor is not None:
+            self.plotter.remove_actor(self.current_bbox_actor)
+            self.current_bbox_actor = None
+        
+        # 選択されたアイテムを取得
+        selected_items = self.geometry_manager.get_selected_items()
+        if not selected_items:
+            self.plotter.render()
+            return
+        
+        # 最初の選択アイテムのバウンディングボックスを表示
+        selected_item = selected_items[0]
+        try:
+            bbox_mesh = self._create_bounding_box(selected_item)
+            if bbox_mesh is not None:
+                self.current_bbox_actor = self.plotter.add_mesh(
+                    bbox_mesh,
+                    style='wireframe',
+                    color='red',
+                    line_width=2,
+                    opacity=0.8
+                )
+        except Exception as e:
+            print(f"バウンディングボックス作成エラー: {e}")
+        
+        self.plotter.render()
+    
+    def _create_bounding_box(self, geometry_item):
+        """ジオメトリアイテムからバウンディングボックスメッシュを作成"""
+        try:
+            if geometry_item.geometry_type == "pointcloud":
+                # 点群の場合
+                points = np.asarray(geometry_item.data.points)
+                if len(points) == 0:
+                    return None
+                
+                # バウンディングボックスの最小・最大座標を計算
+                min_coords = np.min(points, axis=0)
+                max_coords = np.max(points, axis=0)
+                
+            elif geometry_item.geometry_type == "model":
+                # 3Dモデルの場合
+                vertices = np.asarray(geometry_item.data.vertices)
+                if len(vertices) == 0:
+                    return None
+                
+                min_coords = np.min(vertices, axis=0)
+                max_coords = np.max(vertices, axis=0)
+                
+            elif geometry_item.geometry_type == 'textured_model':
+                # テクスチャ付きモデルの場合
+                mesh = geometry_item.data['mesh']
+                bounds = mesh.bounds
+                min_coords = np.array([bounds[0], bounds[2], bounds[4]])
+                max_coords = np.array([bounds[1], bounds[3], bounds[5]])
+                
+            else:
+                return None
+            
+            # PyVistaのボックスメッシュを作成
+            bbox = pv.Box(bounds=(min_coords[0], max_coords[0],
+                                min_coords[1], max_coords[1],
+                                min_coords[2], max_coords[2]))
+            return bbox
+            
+        except Exception as e:
+            print(f"バウンディングボックス作成中にエラー: {e}")
+            return None
 
     def _refresh_entire_scene(self):
         self.plotter.clear()
+        # 追加: クリア時にバウンディングボックスも初期化
+        self.current_bbox_actor = None
+        
         self.plotter.enable_lightkit()
         for geometry in self.geometry_manager.get_visible_items():
             if geometry.geometry_type == "pointcloud":
@@ -134,4 +213,6 @@ class PointCloudUi(QWidget):
                         smooth_shading=True,
                     )
 
+        # 追加: シーン再構築後に選択表示を更新
+        self._update_selection_display()
         self.plotter.render()

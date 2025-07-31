@@ -11,6 +11,7 @@ class GeometryItem:
 
 class GeometryManager(QObject):
     updated = pyqtSignal()
+    selection_changed = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -21,8 +22,15 @@ class GeometryManager(QObject):
         self.updated.emit()
 
     def select(self, name: str):
+        selection_changed = False
         for item in self.items:
-            item.selected = (item.name == name)
+            new_selected = (item.name == name)
+            if item.selected != new_selected:
+                selection_changed = True
+            item.selected = new_selected
+        
+        if selection_changed:
+            self.selection_changed.emit()
 
     def set_visibility(self, name: str, visible: bool):
         for item in self.items:
