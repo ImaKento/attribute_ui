@@ -1,0 +1,89 @@
+{
+  "project_info": {
+    "name": "観月橋",
+    "created_date": "2025-07-31 12:11:51",
+    "version": "1.0"
+  },
+  "folders": {
+    "観月橋": {
+      "type": "first_level",
+      "created_date": "2025-07-31 12:11:56",
+      "objects": {},
+      "second_level_folders": {
+        "上部工": {
+          "type": "second_level",
+          "parent": "観月橋",
+          "created_date": "2025-07-31 12:12:03",
+          "objects": {},
+          "third_level_folders": {
+            "主桁": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 12:12:16",
+              "objects": {},
+              "attributes": {
+                "部材種別": "主桁",
+                "材質": "鋼材",
+                "断面形状": "I形断面",
+                "設計基準": "道路橋示方書",
+                "製作年": "2016",
+                "検査結果": "破損あり"
+              }
+            },
+            "横桁": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 12:12:22",
+              "objects": {}
+            },
+            "対傾構": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 12:12:27",
+              "objects": {}
+            },
+            "床版": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 12:12:37",
+              "objects": {}
+            }
+          },
+          "attributes": {
+            "構造種別": "桁橋",
+            "設計荷重": "B活荷重",
+            "材料強度": "Fc=24N/mm²",
+            "施工年度": "2016",
+            "点検履歴": "未実施",
+            "損傷状況": "重度"
+          }
+        },
+        "下部工": {
+          "type": "second_level",
+          "parent": "観月橋",
+          "created_date": "2025-07-31 12:12:10",
+          "objects": {}
+        }
+      },
+      "attributes": {
+        "施設ID": "43.18167,14132556",
+        "橋梁名": "観月橋",
+        "路線名": "国道○○号",
+        "所在地": "京都府京都市伏見区",
+        "緯度・経度": "○°☓'△\"",
+        "管理者": "〇〇県□□土木事務所",
+        "点検実施日": "2025.○.△",
+        "架設年度": "2016",
+        "橋長": "107m",
+        "幅員": "11.8m",
+        "橋梁形式": "桁橋",
+        "全景画像": "―"
+      }
+    }
+  },
+  "objects": {}
+}
