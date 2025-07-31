@@ -13,5 +13,5 @@ class LoadPointCloudUsecase():
     def exec(self, file_path: str):
         pcd =  self.point_cloud_repository.load(file_path)
         name = os.path.basename(file_path)
-        self.geometry_manager.add(name, pcd, "pointcloud")
+        self.geometry_manager.add(name, pcd, "pointcloud", file_path)
         

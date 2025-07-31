@@ -20,7 +20,7 @@ class MainViewer(QMainWindow):
         super().__init__()
         self.setWindowTitle("Bridge Cloud Drafter")
         # self.setGeometry(50, 70, 1700, 1100)
-        self.setGeometry(100, 100, 1800, 1200)
+        self.setGeometry(100, 100, 1900, 1400)
 
         # 状態変数の管理クラスの初期化
         self.geometry_manager = GeometryManager()

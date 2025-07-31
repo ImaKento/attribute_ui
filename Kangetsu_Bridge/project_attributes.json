@@ -1,0 +1,427 @@
+{
+  "project_info": {
+    "name": "観月橋",
+    "created_date": "2025-07-31 20:02:22",
+    "version": "1.0"
+  },
+  "folders": {
+    "観月橋": {
+      "type": "first_level",
+      "created_date": "2025-07-31 20:03:30",
+      "objects": {},
+      "attributes": {
+        "施設ID": "3455375,1354667",
+        "橋梁名": "観月橋",
+        "路線名": "国道24号",
+        "所在地": "京都府京都市伏見区",
+        "緯度・経度": "北緯34度55分37.5秒, 東経135度46分6.7秒",
+        "管理者": "京都府京都土木事務所",
+        "点検実施日": "2025.08.02",
+        "架設年度": "1975",
+        "橋長": "178.9m",
+        "幅員": "12m",
+        "橋梁形式": "鈑桁橋",
+        "全景画像": ".\\images\\Kangetsukyo_1753960511.JPG"
+      },
+      "second_level_folders": {
+        "上部工": {
+          "type": "second_level",
+          "parent": "観月橋",
+          "created_date": "2025-07-31 20:08:42",
+          "objects": {},
+          "third_level_folders": {
+            "主桁": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 20:13:38",
+              "objects": {},
+              "models": {
+                "shugeta1.stl": {
+                  "type": "placed_model",
+                  "original_name": "shugeta1.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta1.stl",
+                  "placed_date": "2025-07-31 20:20:59",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "shugeta2.stl": {
+                  "type": "placed_model",
+                  "original_name": "shugeta2.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta2.stl",
+                  "placed_date": "2025-07-31 20:21:06",
+                  "visible": true,
+                  "attributes": {
+                    "要素番号": "Mg0102",
+                    "構造形式": "鋼橋鈑桁",
+                    "損傷種類": "正常",
+                    "損傷画像": "―",
+                    "撮影日": "ー",
+                    "判定区分": "A",
+                    "モデル名": "shugeta2.stl",
+                    "ファイルパス": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta2.stl",
+                    "ジオメトリタイプ": "model",
+                    "配置日時": "2025-07-31 20:21:06"
+                  }
+                },
+                "shugeta3.stl": {
+                  "type": "placed_model",
+                  "original_name": "shugeta3.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta3.stl",
+                  "placed_date": "2025-07-31 20:21:16",
+                  "visible": true,
+                  "attributes": {
+                    "要素番号": "Mg0103",
+                    "構造形式": "鋼橋鈑桁",
+                    "損傷種類": "正常",
+                    "損傷画像": "―",
+                    "撮影日": "ー",
+                    "判定区分": "A",
+                    "モデル名": "shugeta3.stl",
+                    "ファイルパス": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta3.stl",
+                    "ジオメトリタイプ": "model",
+                    "配置日時": "2025-07-31 20:21:16"
+                  }
+                },
+                "shugeta4.stl": {
+                  "type": "placed_model",
+                  "original_name": "shugeta4.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta4.stl",
+                  "placed_date": "2025-07-31 20:21:22",
+                  "visible": true,
+                  "attributes": {
+                    "要素番号": "Mg0104",
+                    "構造形式": "鋼橋鈑桁",
+                    "損傷種類": "破損",
+                    "損傷画像": "―",
+                    "撮影日": "2025.05.06",
+                    "判定区分": "B",
+                    "モデル名": "shugeta4.stl",
+                    "ファイルパス": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta4.stl",
+                    "ジオメトリタイプ": "model",
+                    "配置日時": "2025-07-31 20:21:22"
+                  }
+                },
+                "shugeta5.stl": {
+                  "type": "placed_model",
+                  "original_name": "shugeta5.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta5.stl",
+                  "placed_date": "2025-07-31 20:21:28",
+                  "visible": true,
+                  "attributes": {
+                    "要素番号": "Mg0105",
+                    "構造形式": "鋼橋鈑桁",
+                    "損傷種類": "正常",
+                    "損傷画像": "―",
+                    "撮影日": "ー",
+                    "判定区分": "A",
+                    "モデル名": "shugeta5.stl",
+                    "ファイルパス": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shugeta/shugeta5.stl",
+                    "ジオメトリタイプ": "model",
+                    "配置日時": "2025-07-31 20:21:28"
+                  }
+                }
+              }
+            },
+            "横桁": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 20:15:36",
+              "objects": {},
+              "models": {
+                "yokogeta1.stl": {
+                  "type": "placed_model",
+                  "original_name": "yokogeta1.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/yokogeta/yokogeta1.stl",
+                  "placed_date": "2025-07-31 20:24:25",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "yokogeta2.stl": {
+                  "type": "placed_model",
+                  "original_name": "yokogeta2.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/yokogeta/yokogeta2.stl",
+                  "placed_date": "2025-07-31 20:24:32",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "yokogeta3.stl": {
+                  "type": "placed_model",
+                  "original_name": "yokogeta3.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/yokogeta/yokogeta3.stl",
+                  "placed_date": "2025-07-31 20:24:36",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "yokogeta4.stl": {
+                  "type": "placed_model",
+                  "original_name": "yokogeta4.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/yokogeta/yokogeta4.stl",
+                  "placed_date": "2025-07-31 20:24:45",
+                  "visible": true,
+                  "attributes": {}
+                }
+              }
+            },
+            "対傾構": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 20:15:46",
+              "objects": {},
+              "models": {
+                "taikeikou1.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou1.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou1.stl",
+                  "placed_date": "2025-07-31 20:27:06",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou2.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou2.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou2.stl",
+                  "placed_date": "2025-07-31 20:27:29",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou3.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou3.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou3.stl",
+                  "placed_date": "2025-07-31 20:27:39",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou4.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou4.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou4.stl",
+                  "placed_date": "2025-07-31 20:27:45",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou5.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou5.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou5.stl",
+                  "placed_date": "2025-07-31 20:28:19",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou6.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou6.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou6.stl",
+                  "placed_date": "2025-07-31 20:28:00",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou7.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou7.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou7.stl",
+                  "placed_date": "2025-07-31 20:28:08",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou8.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou8.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou8.stl",
+                  "placed_date": "2025-07-31 20:28:30",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou9.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou9.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou9.stl",
+                  "placed_date": "2025-07-31 20:28:36",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou10.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou10.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou10.stl",
+                  "placed_date": "2025-07-31 20:28:43",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou11.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou11.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou11.stl",
+                  "placed_date": "2025-07-31 20:28:49",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou12.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou12.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou12.stl",
+                  "placed_date": "2025-07-31 20:28:55",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou13.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou13.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou13.stl",
+                  "placed_date": "2025-07-31 20:29:02",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou14.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou14.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou14.stl",
+                  "placed_date": "2025-07-31 20:29:12",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou15.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou15.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou15.stl",
+                  "placed_date": "2025-07-31 20:29:19",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "taikeikou16.stl": {
+                  "type": "placed_model",
+                  "original_name": "taikeikou16.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/taikeikou/taikeikou16.stl",
+                  "placed_date": "2025-07-31 20:29:29",
+                  "visible": true,
+                  "attributes": {}
+                }
+              }
+            },
+            "床版": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "上部工",
+              "created_date": "2025-07-31 20:15:52",
+              "objects": {},
+              "models": {
+                "shouban.stl": {
+                  "type": "placed_model",
+                  "original_name": "shouban.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/shouban/shouban.stl",
+                  "placed_date": "2025-07-31 20:30:07",
+                  "visible": false,
+                  "attributes": {}
+                }
+              }
+            }
+          },
+          "attributes": {
+            "構造種別": "鈑桁",
+            "要素番号": "第1径間",
+            "画像": "―"
+          }
+        },
+        "下部工": {
+          "type": "second_level",
+          "parent": "観月橋",
+          "created_date": "2025-07-31 20:09:27",
+          "objects": {},
+          "third_level_folders": {
+            "柱部": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "下部工",
+              "created_date": "2025-07-31 20:10:45",
+              "objects": {},
+              "models": {
+                "kyoukyaku.stl": {
+                  "type": "placed_model",
+                  "original_name": "kyoukyaku.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/kyoukyaku/kyoukyaku.stl",
+                  "placed_date": "2025-07-31 20:19:44",
+                  "visible": true,
+                  "attributes": {}
+                },
+                "kyoukyaku_.stl": {
+                  "type": "placed_model",
+                  "original_name": "kyoukyaku_.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/kyoukyaku/kyoukyaku_.stl",
+                  "placed_date": "2025-07-31 20:20:03",
+                  "visible": true,
+                  "attributes": {}
+                }
+              }
+            },
+            "梁部": {
+              "type": "third_level",
+              "first_level_parent": "観月橋",
+              "second_level_parent": "下部工",
+              "created_date": "2025-07-31 20:10:51",
+              "objects": {},
+              "models": {
+                "kyoukyaku.stl": {
+                  "type": "placed_model",
+                  "original_name": "kyoukyaku.stl",
+                  "geometry_type": "model",
+                  "file_path": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/kyoukyaku/kyoukyaku.stl",
+                  "placed_date": "2025-07-31 20:17:24",
+                  "visible": true,
+                  "attributes": {
+                    "要素番号": "Mg0101",
+                    "構造形式": "鋼橋鈑桁",
+                    "損傷種類": "腐食",
+                    "損傷画像": "―",
+                    "撮影日": "2025.05.06",
+                    "判定区分": "C",
+                    "モデル名": "kyoukyaku.stl",
+                    "ファイルパス": "H:/code_WG1/attribute_demo/Kangetsu_Bridge/kyoukyaku/kyoukyaku.stl",
+                    "ジオメトリタイプ": "model",
+                    "配置日時": "2025-07-31 20:17:24"
+                  }
+                }
+              }
+            }
+          },
+          "attributes": {
+            "構造種別": "橋脚",
+            "要素番号": "Pw0101",
+            "画像": "―"
+          }
+        }
+      }
+    }
+  },
+  "objects": {}
+}

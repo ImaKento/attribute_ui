@@ -49,7 +49,7 @@ class SideBarUi(QWidget):
         self._refresh_list()
 
     def _show_context_menu(self, position):
-        """右クリックメニューを表示"""
+        """右クリックメニ`ューを表示"""
         print(f"右クリックが検出されました。プロジェクトモード: {self.is_project_mode}")  # デバッグ用
         
         if not self.is_project_mode:
@@ -83,6 +83,15 @@ class SideBarUi(QWidget):
                     add_third_level_action.triggered.connect(
                         lambda: self._on_add_third_level_clicked(parent, folder_name)
                     )
+                elif level == 3:
+                    print(f"第3階層フォルダ '{folder_name}' が選択されています")  # デバッグ用
+                    first_level_parent = item_data.get("first_level_parent", "")
+                    second_level_parent = item_data.get("second_level_parent", "")
+                    
+                    add_model_action = menu.addAction("モデルを配置")
+                    add_model_action.triggered.connect(
+                        lambda: self._on_add_model_to_third_level_clicked(first_level_parent, second_level_parent, folder_name)
+                    )
             else:
                 # 通常のアイテムまたはデータが選択されている場合
                 print("通常のアイテムが選択されています")  # デバッグ用
@@ -94,6 +103,97 @@ class SideBarUi(QWidget):
         print("右クリックメニューを表示します")  # デバッグ用
         # メニューを表示
         menu.exec_(self.tree_widget.mapToGlobal(position))
+    
+    def _on_add_model_to_third_level_clicked(self, first_level_parent: str, second_level_parent: str, third_level_folder: str):
+        """第3階層フォルダにモデル配置メニューがクリックされた時の処理"""
+        print(f"モデル配置が選択されました。第1階層: {first_level_parent}, 第2階層: {second_level_parent}, 第3階層: {third_level_folder}")  # デバッグ用
+        
+        if not self.main_viewer or not self.main_viewer.current_project_name:
+            QMessageBox.warning(self, "警告", "プロジェクトが作成されていません。")
+            return
+        
+        # 現在読み込まれているモデルの一覧を取得
+        available_models = [item for item in self.manager.items if item.geometry_type in ["model", "textured_model"]]
+        
+        if not available_models:
+            QMessageBox.information(self, "情報", "配置可能なモデルがありません。\nまずモデルを読み込んでください。")
+            return
+        
+        # モデル選択ダイアログを表示
+        model_names = [model.name for model in available_models]
+        model_name, ok = QInputDialog.getItem(
+            self,
+            "モデル配置",
+            f"'{first_level_parent} > {second_level_parent} > {third_level_folder}' に配置するモデルを選択してください:",
+            model_names,
+            0,
+            False
+        )
+        
+        if not ok or not model_name:
+            return
+        
+        try:
+            # プロジェクト属性に配置モデル情報を追加
+            self._add_model_to_third_level_folder(first_level_parent, second_level_parent, third_level_folder, model_name)
+            
+            # リストを更新
+            self._refresh_list()
+            
+            QMessageBox.information(self, "成功", f"モデル '{model_name}' を '{first_level_parent} > {second_level_parent} > {third_level_folder}' に配置しました。")
+            
+        except Exception as e:
+            QMessageBox.critical(self, "エラー", f"モデルの配置に失敗しました：\n{e}")
+
+    def _add_model_to_third_level_folder(self, first_level_parent: str, second_level_parent: str, third_level_folder: str, model_name: str):
+        """第3階層フォルダにモデルを配置"""
+        if not self.main_viewer:
+            return
+        
+        project_attributes = self.main_viewer.project_attributes
+        folders = project_attributes.get("folders", {})
+        
+        # 階層構造の存在確認
+        if first_level_parent not in folders:
+            raise Exception(f"第1階層フォルダ '{first_level_parent}' が見つかりません")
+        
+        second_level_folders = folders[first_level_parent].get("second_level_folders", {})
+        if second_level_parent not in second_level_folders:
+            raise Exception(f"第2階層フォルダ '{second_level_parent}' が見つかりません")
+        
+        third_level_folders = second_level_folders[second_level_parent].get("third_level_folders", {})
+        if third_level_folder not in third_level_folders:
+            raise Exception(f"第3階層フォルダ '{third_level_folder}' が見つかりません")
+        
+        # 配置モデル情報を追加
+        if "models" not in third_level_folders[third_level_folder]:
+            third_level_folders[third_level_folder]["models"] = {}
+        
+        # モデルの基本情報を取得
+        model_item = next((item for item in self.manager.items if item.name == model_name), None)
+        if not model_item:
+            raise Exception(f"モデル '{model_name}' が見つかりません")
+        
+        # ★ 修正: モデルのパス情報を取得（geometry_managerから）
+        model_path = getattr(model_item, 'file_path', None) or "unknown_path"
+        
+        # 配置モデル情報を保存
+        third_level_folders[third_level_folder]["models"][model_name] = {
+            "type": "placed_model",
+            "original_name": model_name,
+            "geometry_type": model_item.geometry_type,
+            "file_path": model_path,  # ★ 追加: ファイルパス情報
+            "placed_date": QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss"),
+            "visible": True,  # ★ 追加: 初期状態では表示
+            "attributes": {}  # モデル固有の属性情報
+        }
+        
+        # ★ 修正: 元のモデルを非表示にする（第3階層に移動したため）
+        self.manager.set_visibility(model_name, False)
+        
+        # プロジェクト属性を保存
+        self.main_viewer._save_project_attributes()
+
 
     def _on_add_third_level_clicked(self, first_level_parent: str, second_level_parent: str):
         """第3階層フォルダ作成メニューがクリックされた時の処理"""
@@ -339,6 +439,9 @@ class SideBarUi(QWidget):
         if self.main_viewer:
             print(f"プロジェクト名: {self.main_viewer.current_project_name}")  # デバッグ用
         
+        # ★ 追加: 展開状態を保存
+        expand_states = self._save_expand_states()
+        
         self.tree_widget.blockSignals(True)
         self.tree_widget.clear()
 
@@ -352,6 +455,9 @@ class SideBarUi(QWidget):
             # 通常モードの場合は従来通りの表示
             print("通常モードで表示します")  # デバッグ用
             self._refresh_normal_mode()
+        
+        # ★ 追加: 展開状態を復元
+        self._restore_expand_states(expand_states)
         
         self.tree_widget.blockSignals(False)
         print(f"リスト更新完了 - アイテム数: {self.tree_widget.topLevelItemCount()}")  # デバッグ用
@@ -419,19 +525,49 @@ class SideBarUi(QWidget):
                             "second_level_parent": second_folder_name
                         })
                         second_level_item.addChild(third_level_item)
+                        
+                        # 第3階層フォルダ内の配置モデルを表示（チェックボックス付き）
+                        models = third_folder_data.get("models", {})
+                        for model_name, model_data in models.items():
+                            print(f"配置モデルを追加: {model_name}")  # デバッグ用
+                            
+                            model_item = QTreeWidgetItem([f"📄 {model_name}"])
+                            # モデルの表示状態をチェックボックスに反映
+                            is_visible = model_data.get("visible", True)
+                            model_item.setCheckState(0, Qt.Checked if is_visible else Qt.Unchecked)
+                            model_item.setData(0, Qt.UserRole, {
+                                "type": "placed_model",
+                                "name": model_name,
+                                "original_name": model_data.get("original_name", model_name),
+                                "first_level_parent": folder_name,
+                                "second_level_parent": second_folder_name,
+                                "third_level_parent": third_folder_name
+                            })
+                            third_level_item.addChild(model_item)
                 
-                # 第1階層アイテムをデフォルトで展開
-                first_level_item.setExpanded(True)
+                # ★ 削除: デフォルト展開は _restore_expand_states で処理
+                # first_level_item.setExpanded(True)
         
         # 通常のデータアイテムも表示
         data_items_count = len(self.manager.items)
         print(f"データアイテム数: {data_items_count}")  # デバッグ用
         
+        # 配置済みモデルの名前を収集
+        placed_model_names = set()
+        for folder_data in folders.values():
+            if folder_data.get("type") == "first_level":
+                for second_folder_data in folder_data.get("second_level_folders", {}).values():
+                    for third_folder_data in second_folder_data.get("third_level_folders", {}).values():
+                        for model_name in third_folder_data.get("models", {}).keys():
+                            placed_model_names.add(model_name)
+        
         for item in self.manager.items:
-            data_item = QTreeWidgetItem([f"📄 {item.name}"])
-            data_item.setCheckState(0, Qt.Checked if item.visible else Qt.Unchecked)
-            data_item.setData(0, Qt.UserRole, {"type": "data", "name": item.name})
-            self.tree_widget.addTopLevelItem(data_item)
+            # 配置済みモデルは通常リストに表示しない
+            if item.name not in placed_model_names:
+                data_item = QTreeWidgetItem([f"📄 {item.name}"])
+                data_item.setCheckState(0, Qt.Checked if item.visible else Qt.Unchecked)
+                data_item.setData(0, Qt.UserRole, {"type": "data", "name": item.name})
+                self.tree_widget.addTopLevelItem(data_item)
 
     def _refresh_normal_mode(self):
         """通常モードのリスト表示"""
@@ -446,11 +582,32 @@ class SideBarUi(QWidget):
             self.main_viewer.current_project_name and 
             self.is_project_mode):
             item_data = tree_item.data(0, Qt.UserRole)
-            if item_data and item_data.get("type") == "data":
-                name = item_data["name"]
+            if item_data:
+                item_type = item_data.get("type")
                 visible = tree_item.checkState(0) == Qt.Checked
-                print(f"🔁 {name} -> {'表示' if visible else '非表示'}")
-                self.manager.set_visibility(name, visible)
+                
+                if item_type == "data":
+                    name = item_data["name"]
+                    print(f"🔁 通常データ {name} -> {'表示' if visible else '非表示'}")
+                    self.manager.set_visibility(name, visible)
+                    
+                elif item_type == "placed_model":
+                    # ★ 新規追加: 配置モデルの表示・非表示制御
+                    model_name = item_data["name"]
+                    first_level_parent = item_data["first_level_parent"]
+                    second_level_parent = item_data["second_level_parent"]
+                    third_level_parent = item_data["third_level_parent"]
+                    
+                    print(f"🔁 配置モデル {model_name} -> {'表示' if visible else '非表示'}")
+                    
+                    # プロジェクト属性を更新
+                    self._update_placed_model_visibility(
+                        first_level_parent, second_level_parent, third_level_parent, 
+                        model_name, visible
+                    )
+                    
+                    # geometry_managerの表示状態も更新
+                    self.manager.set_visibility(model_name, visible)
         else:
             # 通常モードの場合（従来通り）
             name = tree_item.text(0)
@@ -474,7 +631,9 @@ class SideBarUi(QWidget):
             print(f"[SideBar] アイテムデータ: {item_data}")  # デバッグ用
             
             if item_data:
-                if item_data.get("type") == "folder":
+                item_type = item_data.get("type")
+                
+                if item_type == "folder":
                     folder_name = item_data["name"]
                     level = item_data.get("level", 1)
                     parent = item_data.get("parent", None)
@@ -501,20 +660,38 @@ class SideBarUi(QWidget):
                         first_level_parent = item_data.get("first_level_parent", "")
                         second_level_parent = item_data.get("second_level_parent", "")
                         print(f"[SideBar] 📄 第3階層フォルダ選択: {folder_name} (親: {first_level_parent} > {second_level_parent})")
-                        # attribute_uiに第3階層フォルダの属性情報を表示
+                        
+                        # ★ 修正: 第3階層フォルダは属性表示をクリア（モデル個別の属性のみ表示するため）
                         if hasattr(self.main_viewer, 'attribute_ui'):
-                            print(f"[SideBar] attribute_uiに第3階層属性表示を要求")
-                            self.main_viewer.attribute_ui.show_folder_attributes(folder_name, level, f"{first_level_parent} > {second_level_parent}")
+                            print(f"[SideBar] 第3階層フォルダ選択時は属性表示をクリア")
+                            self.main_viewer.attribute_ui.hide_attributes()
                         else:
                             print(f"[SideBar] エラー: attribute_uiが見つかりません")
-                    
-                elif item_data.get("type") == "data":
+                            
+                elif item_type == "data":
                     name = item_data["name"]
                     print(f"[SideBar] 🎯 データ選択: {name}")
                     self.manager.select(name)
                     # データ選択時は属性表示をクリア
                     if hasattr(self.main_viewer, 'attribute_ui'):
                         self.main_viewer.attribute_ui.hide_attributes()
+                        
+                elif item_type == "placed_model":
+                    # ★ 修正: 配置モデル選択時の処理
+                    model_name = item_data["name"]
+                    original_name = item_data.get("original_name", model_name)
+                    print(f"[SideBar] 🎯 配置モデル選択: {model_name} (元: {original_name})")
+                    
+                    # geometry_managerで選択状態を更新
+                    self.manager.select(original_name)
+                    
+                    # ★ 修正: 配置モデルの属性表示機能を呼び出し
+                    if hasattr(self.main_viewer, 'attribute_ui'):
+                        print(f"[SideBar] 配置モデルの属性表示を要求")
+                        self.main_viewer.attribute_ui.show_placed_model_attributes(item_data)
+                    else:
+                        print(f"[SideBar] エラー: attribute_uiが見つかりません")
+                    
             else:
                 print(f"[SideBar] 警告: アイテムデータがありません")
                 # アイテムデータがない場合は属性表示をクリア
@@ -525,3 +702,88 @@ class SideBarUi(QWidget):
             name = tree_item.text(0)
             print(f"[SideBar] 🎯 通常モード選択: {name}")
             self.manager.select(name)
+    def _update_placed_model_visibility(self, first_level_parent: str, second_level_parent: str, 
+                                  third_level_parent: str, model_name: str, visible: bool):
+        """配置モデルの表示状態をプロジェクト属性に保存"""
+        if not self.main_viewer:
+            return
+        
+        try:
+            project_attributes = self.main_viewer.project_attributes
+            folders = project_attributes.get("folders", {})
+            
+            # 階層構造をたどって配置モデルの属性を更新
+            if first_level_parent in folders:
+                second_level_folders = folders[first_level_parent].get("second_level_folders", {})
+                if second_level_parent in second_level_folders:
+                    third_level_folders = second_level_folders[second_level_parent].get("third_level_folders", {})
+                    if third_level_parent in third_level_folders:
+                        models = third_level_folders[third_level_parent].get("models", {})
+                        if model_name in models:
+                            models[model_name]["visible"] = visible
+                            # プロジェクト属性を保存
+                            self.main_viewer._save_project_attributes()
+                            print(f"配置モデル {model_name} の表示状態を更新: {visible}")
+        except Exception as e:
+            print(f"配置モデルの表示状態更新エラー: {e}")
+        
+    def _save_expand_states(self):
+        """TreeWidgetの展開状態を保存"""
+        expand_states = {}
+        
+        def save_item_state(item, path=""):
+            if item is None:
+                return
+            
+            # アイテムのパスを作成
+            item_text = item.text(0)
+            current_path = f"{path}/{item_text}" if path else item_text
+            
+            # 展開状態を保存
+            expand_states[current_path] = item.isExpanded()
+            
+            # 子アイテムも再帰的に処理
+            for i in range(item.childCount()):
+                child_item = item.child(i)
+                save_item_state(child_item, current_path)
+        
+        # トップレベルアイテムから開始
+        for i in range(self.tree_widget.topLevelItemCount()):
+            top_item = self.tree_widget.topLevelItem(i)
+            save_item_state(top_item)
+        
+        return expand_states
+
+    def _restore_expand_states(self, expand_states):
+        """TreeWidgetの展開状態を復元"""
+        if not expand_states:
+            # デフォルトで第1階層を展開
+            for i in range(self.tree_widget.topLevelItemCount()):
+                top_item = self.tree_widget.topLevelItem(i)
+                item_data = top_item.data(0, Qt.UserRole)
+                if item_data and item_data.get("type") == "folder" and item_data.get("level") == 1:
+                    top_item.setExpanded(True)
+            return
+        
+        def restore_item_state(item, path=""):
+            if item is None:
+                return
+            
+            # アイテムのパスを作成
+            item_text = item.text(0)
+            current_path = f"{path}/{item_text}" if path else item_text
+            
+            # 展開状態を復元
+            if current_path in expand_states:
+                item.setExpanded(expand_states[current_path])
+            
+            # 子アイテムも再帰的に処理
+            for i in range(item.childCount()):
+                child_item = item.child(i)
+                restore_item_state(child_item, current_path)
+        
+        # トップレベルアイテムから開始
+        for i in range(self.tree_widget.topLevelItemCount()):
+            top_item = self.tree_widget.topLevelItem(i)
+            restore_item_state(top_item)
+

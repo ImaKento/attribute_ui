@@ -22,7 +22,7 @@ class LoadModelUsecase():
             # 従来の処理
             pcd = self.model_repository.load(file_path)
             name = os.path.basename(file_path)
-            self.geometry_manager.add(name, pcd, "model")
+            self.geometry_manager.add(name, pcd, "model", file_path)
     
     def _load_obj_model(self, obj_file_path: str):
         """OBJファイルとその関連テクスチャファイルを読み込む"""
@@ -47,7 +47,7 @@ class LoadModelUsecase():
                     'mesh': mesh,
                     'texture': texture
                 }
-                self.geometry_manager.add(obj_name, textured_data, "textured_model")
+                self.geometry_manager.add(obj_name, textured_data, "textured_model", obj_file_path)
                 
                 # ログ出力
                 if isinstance(texture, dict):
@@ -61,11 +61,11 @@ class LoadModelUsecase():
                     print(f"  - Material file: {os.path.basename(related_files['mtl'])}")
             else:
                 # テクスチャの読み込みに失敗した場合は通常のモデルとして追加
-                self.geometry_manager.add(obj_name, mesh, "model")
+                self.geometry_manager.add(obj_name, mesh, "model", obj_file_path)
                 print(f"Loaded OBJ model (texture failed): {obj_name}")
         else:
             # テクスチャファイルがない場合は通常のモデルとして追加
-            self.geometry_manager.add(obj_name, mesh, "model")
+            self.geometry_manager.add(obj_name, mesh, "model", obj_file_path)
             print(f"Loaded OBJ model: {obj_name}")
     
     def _find_related_files(self, obj_dir: Path, obj_name: str):

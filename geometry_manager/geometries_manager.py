@@ -1,10 +1,11 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 
 class GeometryItem:
-    def __init__(self, name: str, data, geometry_type: str):
+    def __init__(self, name: str, data, geometry_type: str, file_path: str = None):
         self.name = name
         self.data = data
         self.geometry_type = geometry_type
+        self.file_path = file_path
         self.visible = True
         self.selected = False
 
@@ -15,8 +16,8 @@ class GeometryManager(QObject):
         super().__init__()
         self.items: list[GeometryItem] = []
 
-    def add(self, name: str, data, geometry_type: str):
-        self.items.append(GeometryItem(name, data, geometry_type))
+    def add(self, name: str, data, geometry_type: str, file_path: str = None):
+        self.items.append(GeometryItem(name, data, geometry_type, file_path))
         self.updated.emit()
 
     def select(self, name: str):
